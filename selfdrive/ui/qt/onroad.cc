@@ -83,8 +83,8 @@ OnroadAlerts::OnroadAlerts(QWidget *parent) : QWidget(parent) {
     sounds[alert].second = loops ? QSoundEffect::Infinite : 0;
   }
 
-  auto pathToGreetingSound = QUrl::formLocalFile("../assets/sounds/greeting.wav");
-  greeting_sound.setSource(pathToGreetingSound)
+  auto pathToGreetingSound = QUrl::fromLocalFile("../assets/sounds/greeting.wav");
+  greeting_sound.setSource(pathToGreetingSound);
 }
 
 void OnroadAlerts::updateState(const UIState &s) {

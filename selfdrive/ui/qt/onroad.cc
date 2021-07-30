@@ -82,6 +82,9 @@ OnroadAlerts::OnroadAlerts(QWidget *parent) : QWidget(parent) {
     sounds[alert].first.setSource(QUrl::fromLocalFile(fn));
     sounds[alert].second = loops ? QSoundEffect::Infinite : 0;
   }
+
+  auto pathToGreetingSound = QUrl::formLocalFile("../assets/sounds/greeting.wav");
+  greeting_sound.setSource(pathToGreetingSound)
 }
 
 void OnroadAlerts::updateState(const UIState &s) {
@@ -131,6 +134,13 @@ void OnroadAlerts::updateAlert(const QString &t1, const QString &t2, float blink
   stopSounds();
   if (sound != AudibleAlert::NONE) {
     playSound(sound);
+  }
+
+  if (t1.contains(QString("Welcome")) || t1.contains(QString("WARNING")))
+  {
+    greeting_sound.setLoopCount(0);
+    greeting_sound.setVolume(0.9);
+    greeting_sound.play();
   }
 
   text1 = t1;

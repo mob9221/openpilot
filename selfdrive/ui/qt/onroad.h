@@ -40,6 +40,8 @@ private:
   std::string alert_type;
   cereal::ControlsState::AlertSize alert_size;
 
+  QSoundEffect greeting_sound; //greeting sound
+
 public slots:
   void updateState(const UIState &s);
   void offroadTransition(bool offroad);

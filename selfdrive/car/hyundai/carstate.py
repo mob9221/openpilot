@@ -19,6 +19,11 @@ class CarState(CarStateBase):
     else:  # preferred and elect gear methods use same definition
       self.shifter_values = can_define.dv["LVR12"]["CF_Lvr_Gear"]
 
+    self.hda_active = 0
+    self.hda_icon = 0
+    self.hda_vset = 0
+    self.hda_chime = 0
+
 
   def update(self, cp, cp_cam):
     ret = car.CarState.new_message()
@@ -111,6 +116,13 @@ class CarState(CarStateBase):
     self.brake_error = cp.vl["TCS13"]["ACCEnable"] != 0 # 0 ACC CONTROL ENABLED, 1-3 ACC CONTROL DISABLED
     self.prev_cruise_buttons = self.cruise_buttons
     self.cruise_buttons = cp.vl["CLU11"]["CF_Clu_CruiseSwState"]
+
+    #Get HDA Data if available
+    if self.CP.carFingerprint in FEATURES["use_hda"]:
+      self.hda_icon = cp_cam.vl["LFAHDA_MFC"]["HDA_Icon_State"]
+      self.hda_active = cp_cam.vl["LFAHDA_MFC"]["HDA_Active"]
+      self.hda_vset = cp_cam.vl["LFAHDA_MFC"]["HDA_VsetReq"]
+      self.hda_chime = cp_cam.vl["LFAHDA_MFC"]["HDA_Chime"]
 
     return ret
 

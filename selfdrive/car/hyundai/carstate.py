@@ -19,11 +19,6 @@ class CarState(CarStateBase):
     else:  # preferred and elect gear methods use same definition
       self.shifter_values = can_define.dv["LVR12"]["CF_Lvr_Gear"]
 
-    self.hda_active = 0
-    self.hda_icon = 0
-    self.hda_vset = 0
-    self.hda_chime = 0
-
 
   def update(self, cp, cp_cam):
     ret = car.CarState.new_message()
@@ -117,19 +112,21 @@ class CarState(CarStateBase):
     self.prev_cruise_buttons = self.cruise_buttons
     self.cruise_buttons = cp.vl["CLU11"]["CF_Clu_CruiseSwState"]
 
+    print("Getting HDA states")
+
     #Get HDA Data if available
-    if self.CP.carFingerprint in FEATURES["use_hda"]:
-      try:
-        self.hda_icon = cp.vl["LFAHDA_MFC"]["HDA_Icon_State"]
-        print("Got icon")
-        self.hda_active = cp.vl["LFAHDA_MFC"]["HDA_Active"]
-        print("Got active")
-        self.hda_vset = cp.vl["LFAHDA_MFC"]["HDA_VsetReq"]
-        self.hda_chime = cp.vl["LFAHDA_MFC"]["HDA_Chime"]
-      except expression as identifier:
-        print(identifier)
-      
-      print("CARSTATE HDA ICON %d HDA ACTIVE %d HDA VSET %d HDA CHIME %d", self.hda_icon, self.hda_active, self.hda_vset, self.hda_chime)
+    
+    try:
+      self.hda_icon = int(cp.vl["LFAHDA_MFC"]["HDA_Icon_State"])
+      print("Got icon")
+      self.hda_active = int(cp.vl["LFAHDA_MFC"]["HDA_Active"])
+      print("Got active")
+      self.hda_vset = int(cp.vl["LFAHDA_MFC"]["HDA_VsetReq"])
+      self.hda_chime = int(cp.vl["LFAHDA_MFC"]["HDA_Chime"])
+    except expression as identifier:
+      print(identifier)
+    
+    print("CARSTATE HDA ICON %d HDA ACTIVE %d HDA VSET %d HDA CHIME %d", self.hda_icon, self.hda_active, self.hda_vset, self.hda_chime)
 
     return ret
 
@@ -281,7 +278,7 @@ class CarState(CarStateBase):
         ("AEB_CmdAct", "SCC12", 0),
         ("CF_VSM_Warn", "SCC12", 0),
       ]
-
+    
     signals += [
         ("HDA_Icon_State", "LFAHDA_MFC", 0),
         ("HDA_Active", "LFAHDA_MFC", 0),
@@ -292,6 +289,7 @@ class CarState(CarStateBase):
     checks += [
       ("LFAHDA_MFC", 20)
     ]
+
 
     return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, 0)
 
@@ -317,8 +315,13 @@ class CarState(CarStateBase):
       ("CF_Lkas_LdwsOpt_USM", "LKAS11", 0),
     ]
 
+
     checks = [
       ("LKAS11", 100)
     ]
+
+    
+
+    
 
     return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, 2)

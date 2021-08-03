@@ -70,10 +70,10 @@ def create_clu11(packer, frame, clu11, button):
 def create_lfahda_mfc(packer, enabled, hda_active, hda_icon, hda_chime, hda_set_speed=0):
   values = {
     "LFA_Icon_State": 2 if enabled else 0,
-    "HDA_Active": hda_active,
-    "HDA_Icon_State": hda_icon,
-    "HDA_Chime" : hda_chime,
-    "HDA_VSetReq": hda_set_speed,
+    "HDA_Active": hda_active if enabled else 0,
+    "HDA_Icon_State": 2 if enabled else 0,
+    "HDA_Chime" : hda_chime if enabled else 0,
+    "HDA_VSetReq": hda_set_speed if enabled else 0,
   }
   return packer.make_can_msg("LFAHDA_MFC", 0, values)
 

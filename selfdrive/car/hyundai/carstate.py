@@ -120,12 +120,12 @@ class CarState(CarStateBase):
     #Get HDA Data if available
     if self.CP.carFingerprint in FEATURES["use_hda"]:
       try:
-        self.hda_icon = cp_cam.vl["LFAHDA_MFC"]["HDA_Icon_State"]
+        self.hda_icon = cp.vl["LFAHDA_MFC"]["HDA_Icon_State"]
         print("Got icon")
-        self.hda_active = cp_cam.vl["LFAHDA_MFC"]["HDA_Active"]
+        self.hda_active = cp.vl["LFAHDA_MFC"]["HDA_Active"]
         print("Got active")
-        self.hda_vset = cp_cam.vl["LFAHDA_MFC"]["HDA_VsetReq"]
-        self.hda_chime = cp_cam.vl["LFAHDA_MFC"]["HDA_Chime"]
+        self.hda_vset = cp.vl["LFAHDA_MFC"]["HDA_VsetReq"]
+        self.hda_chime = cp.vl["LFAHDA_MFC"]["HDA_Chime"]
       except expression as identifier:
         print(identifier)
       

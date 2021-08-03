@@ -127,7 +127,7 @@ class CarState(CarStateBase):
         self.hda_vset = cp_cam.vl["LFAHDA_MFC"]["HDA_VsetReq"]
         self.hda_chime = cp_cam.vl["LFAHDA_MFC"]["HDA_Chime"]
       except expression as identifier:
-        print("Fail")
+        print(identifier)
       
       print("CARSTATE HDA ICON %d HDA ACTIVE %d HDA VSET %d HDA CHIME %d", self.hda_icon, self.hda_active, self.hda_vset, self.hda_chime)
 

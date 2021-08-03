@@ -119,10 +119,16 @@ class CarState(CarStateBase):
 
     #Get HDA Data if available
     if self.CP.carFingerprint in FEATURES["use_hda"]:
-      # self.hda_icon = cp_cam.vl["LFAHDA_MFC"]["HDA_Icon_State"]
-      # self.hda_active = cp_cam.vl["LFAHDA_MFC"]["HDA_Active"]
-      # self.hda_vset = cp_cam.vl["LFAHDA_MFC"]["HDA_VsetReq"]
-      # self.hda_chime = cp_cam.vl["LFAHDA_MFC"]["HDA_Chime"]
+      try:
+        self.hda_icon = cp_cam.vl["LFAHDA_MFC"]["HDA_Icon_State"]
+        print("Got icon")
+        self.hda_active = cp_cam.vl["LFAHDA_MFC"]["HDA_Active"]
+        print("Got active")
+        self.hda_vset = cp_cam.vl["LFAHDA_MFC"]["HDA_VsetReq"]
+        self.hda_chime = cp_cam.vl["LFAHDA_MFC"]["HDA_Chime"]
+      except expression as identifier:
+        print("Fail")
+      
       print("CARSTATE HDA ICON %d HDA ACTIVE %d HDA VSET %d HDA CHIME %d", self.hda_icon, self.hda_active, self.hda_vset, self.hda_chime)
 
     return ret
@@ -304,16 +310,16 @@ class CarState(CarStateBase):
       ("LKAS11", 100)
     ]
 
-    if CP.carFingerprint in FEATURES["use_hda"]:
-      signals += [
-          ("HDA_Icon_State", "LFAHDA_MFC", 0),
-          ("HDA_Active", "LFAHDA_MFC", 0),
-          ("HDA_VSetReq", "LFAHDA_MFC", 0),
-          ("HDA_Chime", "LFAHDA_MFC", 0),
-      ]
+    
+    signals += [
+        ("HDA_Icon_State", "LFAHDA_MFC", 0),
+        ("HDA_Active", "LFAHDA_MFC", 0),
+        ("HDA_VSetReq", "LFAHDA_MFC", 0),
+        ("HDA_Chime", "LFAHDA_MFC", 0),
+    ]
 
-      checks += [
-        ("LFAHDA_MFC", 20)
-      ]
+    checks += [
+      ("LFAHDA_MFC", 20)
+    ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, 2)

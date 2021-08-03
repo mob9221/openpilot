@@ -117,17 +117,9 @@ class CarState(CarStateBase):
     #Get HDA Data if available
     
     try:
-      self.hda_icon = int(cp.vl["LFAHDA_MFC"]["HDA_Icon_State"])
-      print("Got icon")
-      self.hda_active = int(cp.vl["LFAHDA_MFC"]["HDA_Active"])
-      print("Got active")
-      self.hda_vset = int(cp.vl["LFAHDA_MFC"]["HDA_VsetReq"])
-      self.hda_chime = int(cp.vl["LFAHDA_MFC"]["HDA_Chime"])
+      self.lfahda_mfc = copy.copy(cp.vl["LFAHDA_MFC"])
     except expression as identifier:
       print(identifier)
-    
-    print("CARSTATE HDA ICON %d HDA ACTIVE %d HDA VSET %d HDA CHIME %d", self.hda_icon, self.hda_active, self.hda_vset, self.hda_chime)
-
     return ret
 
   @staticmethod

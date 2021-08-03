@@ -67,14 +67,11 @@ def create_clu11(packer, frame, clu11, button):
   return packer.make_can_msg("CLU11", 0, values)
 
 
-def create_lfahda_mfc(packer, enabled, hda_active, hda_icon, hda_chime, hda_set_speed=0):
-  values = {
-    "LFA_Icon_State": 2 if enabled else 0,
-    "HDA_Active": hda_active if enabled else 0,
-    "HDA_Icon_State": 2 if enabled else 0,
-    "HDA_Chime" : hda_chime if enabled else 0,
-    "HDA_VSetReq": hda_set_speed if enabled else 0,
-  }
+def create_lfahda_mfc(packer, enabled, lfahda_mfc):
+
+  values = lfahda_mfc
+  values["LFA_Icon_State"] = 2 if enabled else 0
+
   return packer.make_can_msg("LFAHDA_MFC", 0, values)
 
 def create_acc_commands(packer, enabled, accel, idx, lead_visible, set_speed, stopping):

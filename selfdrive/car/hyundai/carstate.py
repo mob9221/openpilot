@@ -111,15 +111,8 @@ class CarState(CarStateBase):
     self.brake_error = cp.vl["TCS13"]["ACCEnable"] != 0 # 0 ACC CONTROL ENABLED, 1-3 ACC CONTROL DISABLED
     self.prev_cruise_buttons = self.cruise_buttons
     self.cruise_buttons = cp.vl["CLU11"]["CF_Clu_CruiseSwState"]
-
-    print("Getting HDA states")
-
-    #Get HDA Data if available
+    self.lfahda_mfc = copy.copy(cp.vl["LFAHDA_MFC"])
     
-    try:
-      self.lfahda_mfc = copy.copy(cp.vl["LFAHDA_MFC"])
-    except expression as identifier:
-      print(identifier)
     return ret
 
   @staticmethod
@@ -272,10 +265,10 @@ class CarState(CarStateBase):
       ]
     
     signals += [
-        ("HDA_Icon_State", "LFAHDA_MFC", 0),
-        ("HDA_Active", "LFAHDA_MFC", 0),
-        ("HDA_VSetReq", "LFAHDA_MFC", 0),
-        ("HDA_Chime", "LFAHDA_MFC", 0),
+      ("HDA_Icon_State", "LFAHDA_MFC", 0),
+      ("HDA_Active", "LFAHDA_MFC", 0),
+      ("HDA_VSetReq", "LFAHDA_MFC", 0),
+      ("HDA_Chime", "LFAHDA_MFC", 0),
     ]
 
     checks += [

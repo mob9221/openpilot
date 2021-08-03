@@ -282,6 +282,17 @@ class CarState(CarStateBase):
         ("CF_VSM_Warn", "SCC12", 0),
       ]
 
+    signals += [
+        ("HDA_Icon_State", "LFAHDA_MFC", 0),
+        ("HDA_Active", "LFAHDA_MFC", 0),
+        ("HDA_VSetReq", "LFAHDA_MFC", 0),
+        ("HDA_Chime", "LFAHDA_MFC", 0),
+    ]
+
+    checks += [
+      ("LFAHDA_MFC", 20)
+    ]
+
     return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, 0)
 
   @staticmethod
@@ -308,18 +319,6 @@ class CarState(CarStateBase):
 
     checks = [
       ("LKAS11", 100)
-    ]
-
-    
-    signals += [
-        ("HDA_Icon_State", "LFAHDA_MFC", 0),
-        ("HDA_Active", "LFAHDA_MFC", 0),
-        ("HDA_VSetReq", "LFAHDA_MFC", 0),
-        ("HDA_Chime", "LFAHDA_MFC", 0),
-    ]
-
-    checks += [
-      ("LFAHDA_MFC", 20)
     ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, 2)

@@ -367,6 +367,12 @@ class Controls:
     # if stock cruise is completely disabled, then we can use our own set speed logic
     if not self.CP.pcmCruise:
       self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled)
+
+      #Get the speed limit from nav and apply it here when enabled
+      if not CS.speed_change_applied and self.state == State.enabled:
+        self.v_cruise_kph = CS.cruise_speed_desired
+        CS.speed_change_applied = True
+
     elif self.CP.pcmCruise and CS.cruiseState.enabled:
       self.v_cruise_kph = CS.cruiseState.speed * CV.MS_TO_KPH
 

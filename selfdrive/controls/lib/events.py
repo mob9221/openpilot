@@ -267,8 +267,8 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
 
   EventName.startupMaster: {
     ET.PERMANENT: Alert(
-      "WARNING: This branch is not tested",
-      "Always keep hands on wheel and eyes on road",
+      "Welcome back Omar",
+      "Enjoy the drive!",
       AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 10.),
   },
@@ -373,6 +373,14 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       "Lane Departure Detected",
       AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.ldw, AudibleAlert.chimePrompt, 1., 2., 3.),
+  },
+
+  EventName.speedSignChanged: {
+    ET.PERMANENT: Alert(
+      "Speed Limit Changing",
+      "Adjusting Cruise Speed",
+      AlertStatus.userPrompt, AlertSize.mid,
+      Priority.LOW, VisualAlert.none, AudibleAlert.chimePrompt, 1., 2., 2.),
   },
 
   # ********** events only containing alerts that display while engaged **********

@@ -284,6 +284,9 @@ class CarInterface(CarInterfaceBase):
 
     events = self.create_common_events(ret, pcm_enable=self.CS.CP.pcmCruise)
 
+    if(self.CS.speed_sign_changed):
+      events.add(car.CarEvent.EventName.speedSignChanged)
+
     if self.CS.brake_error:
       events.add(EventName.brakeUnavailable)
     if self.CS.brake_hold and self.CS.CP.openpilotLongitudinalControl:

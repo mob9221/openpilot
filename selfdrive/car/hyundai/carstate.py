@@ -19,6 +19,13 @@ class CarState(CarStateBase):
     else:  # preferred and elect gear methods use same definition
       self.shifter_values = can_define.dv["LVR12"]["CF_Lvr_Gear"]
 
+    self.is_highway = False
+    self.speed_sign = 0
+    self.speed_sign_changed = False
+    self.cruise_speed_desired = 0
+    self.speed_change_applied = True
+    self.cruise_speed_current = 0
+
 
   def update(self, cp, cp_cam):
     ret = car.CarState.new_message()
@@ -112,6 +119,19 @@ class CarState(CarStateBase):
     self.brake_error = cp.vl["TCS13"]["ACCEnable"] != 0 # 0 ACC CONTROL ENABLED, 1-3 ACC CONTROL DISABLED
     self.prev_cruise_buttons = self.cruise_buttons
     self.cruise_buttons = cp.vl["CLU11"]["CF_Clu_CruiseSwState"]
+
+    self.is_highway = cp.vl["SCC11"]["Navi_SCC_Curve_Act"] != 0
+    speed_sign_new = cp.vl["Navi_HU"]["SpeedLim_Nav_Clu"]
+
+    if speed_sign_new != self.speed_sign:
+      self.speed_sign_changed = True
+      self.speed_change_applied = False
+    else:
+      self.speed_sign_changed = False
+
+    self.speed_sign = speed_sign_new
+    speed_lim_offset = 15 if self.is_highway else 4
+    self.cruise_speed_desired = int(self.speed_sign + speed_lim_offset)
 
     return ret
 
@@ -264,6 +284,14 @@ class CarState(CarStateBase):
       checks += [
         ("LVR12", 100)
       ]
+
+    signals += [
+        ("SpeedLim_Nav_Clu", "Navi_HU", 0),
+    ]
+
+    checks += [
+        ("Navi_HU", 5)
+    ]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, 0)
 
